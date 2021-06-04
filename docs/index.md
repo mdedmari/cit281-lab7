@@ -1,37 +1,74 @@
-## Welcome to GitHub Pages
+![Image of library](https://i.ibb.co/vvWKfDK/lab-07.png)
 
-You can use the [editor on GitHub](https://github.com/mdedmari/cit281-lab7/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
+{
+class Book {
+    constructor(title, author, pubDate, isbn) {
+      this.title = title;
+      this.author = author;
+      this.pubDate = pubDate;
+      this.isbn =  isbn;
+    }
+  }
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+// Create a book
+const atomicHabits = new Book("Atomic Habits", "James Clear", "10/16/2018");
 
-### Jekyll Themes
+class Library {
+    constructor(name) {
+      this._name = name;
+      this._books = [];
+    }
+    get books() {
+      // Return copy of books
+      return JSON.parse(JSON.stringify(this._books));
+    }
+    get count() {
+      return this._books.length;
+    }
+    addBook(book = {}) {
+      const { title = "", author = "", pubDate = "" } = book;
+      if (title.length > 0 && author.length > 0) {
+        const newBook = { title, author, pubDate, isbn };
+        this._books.push(newBook);
+      }
+    }
+    listBooks() {
+      for (const book of this._books) {
+        const {title, author, pubDate, isbn} = book;
+        console.log(`Title: ${title}, Author: ${author}, PubDate: ${pubDate}, ISBN: ${isbn}`);
+      }
+    }
+    deleteBook(isbn) {
+    let indexOfBookToRemove = null;
+    for(let index = 0; index < this._books.length; index++){
+        let currentBook = this._books[index];
+        if(currentBook.isbn == isbn) {
+            indexOfBookToRemove = index;
+            break;
+        }
+    }
+    this._books.splice(indexOfBookToRemove, 1);
+    }
+  }
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mdedmari/cit281-lab7/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+  const myBook = new Book("AP Calc Crash Course", "Banu et al", "01/01/2003", "1937828");
+  
+  
+  // Create library object
+const library = new Library("New York Times Best Seller List");
 
-### Support or Contact
+// Create a book
+const atomicHabits = new Book("Atomic Habits", "James Clear", "10/16/2018", "1294932");
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+// Add book to library and output library count and books
+library.addBook(atomicHabits);
+console.log(`Book count: ${library.count}`);
+library.listBooks();
+
+console.log("Deleting Book");
+library.deleteBook("1294932");
+library.listBooks();
+
+}
+```
